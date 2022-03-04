@@ -40,8 +40,12 @@ enum Config {
     LEDEffect,
     /// (not implemented)
     LEDBrightness,
-    /// (not implemented)
-    Sleep,
+    Sleep {
+        #[clap(name = "MINUTES")]
+        m: u8,
+        #[clap(name = "SECONDS", default_value = "0")]
+        s: u8,
+    },
     /// (not implemented)
     DPIStages,
     /// (not implemented)
@@ -90,6 +94,7 @@ fn main() {
         },
         Kind::Config(config) => match config {
             Config::Profile { id } => config::profile::set(&hid_device, id),
+            Config::Sleep { m, s} => config::sleep::set(&hid_device, m, s),
             _ => println!("(not implemented)"),
         },
     }
