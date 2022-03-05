@@ -1,26 +1,29 @@
 use hidapi::HidDevice;
 
-pub fn set(hid_device: &HidDevice, m: u8, s: u8) {
-    let mut bfr = [0u8; 65];
+pub fn set(hid_device: &HidDevice, minutes: u8, seconds: Option<u8>) {
+    let mut buffer = [0u8; 65];
 
-    bfr[3] = 0x02;
-    bfr[4] = 0x02;
-    bfr[6] = 0x07;
+    buffer[3] = 0x02;
+    buffer[4] = 0x02;
+    buffer[6] = 0x07;
 
-    let s_total = (m as u16) * 60 + (s as u16);
+    let seconds_total =
+        (minutes as u16) * 60 +
+        (seconds.unwrap_or(0) as u16);
 
-    if m > 0 || s > 0 {
-        let [first, second] = s_total.to_be_bytes();
-        bfr[7] = first;
-        bfr[8] = second;
+    if seconds_total > 0 {
+        let [first, second] = seconds_total
+            .to_be_bytes();
+
+        buffer[7] = first;
+        buffer[8] = second;
     }
     else {
-        bfr[7] = 0xFF;
-        bfr[8] = 0xFF;
+        buffer[7] = 0xFF;
+        buffer[8] = 0xFF;
     }
 
-
     hid_device
-        .send_feature_report(&bfr)
-        .unwrap(); // TODO: error handling
+        .send_feature_report(&buffer)
+        .unwrap();
 }

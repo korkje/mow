@@ -13,7 +13,7 @@ pub fn get(hid_device: &HidDevice, wired: bool) {
 
     hid_device
         .send_feature_report(&bfr_w)
-        .unwrap(); // TODO: error handling
+        .unwrap();
 
     thread::sleep(Duration::from_millis(50));
 
@@ -21,7 +21,7 @@ pub fn get(hid_device: &HidDevice, wired: bool) {
 
     hid_device
         .get_feature_report(&mut bfr_r)
-        .unwrap(); // TODO: error handling
+        .unwrap();
 
     println!(
         "{}.{}.{}.{}",

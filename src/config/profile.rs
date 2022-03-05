@@ -10,5 +10,5 @@ pub fn set(hid_device: &HidDevice, id: u8) {
 
     hid_device
         .send_feature_report(&bfr)
-        .unwrap(); // TODO: error handling
+        .unwrap();
 }

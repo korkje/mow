@@ -10,17 +10,17 @@ pub fn get(hid_device: &HidDevice) {
 
     hid_device
         .send_feature_report(&bfr_w)
-        .unwrap(); // TODO: error handling
+        .unwrap();
 
     thread::sleep(Duration::from_millis(50));
 
-    let mut bfr_r = [0u8; 65];
+    let mut read_bfr = [0u8; 65];
 
     hid_device
-        .get_feature_report(&mut bfr_r)
-        .unwrap(); // TODO: error handling
+        .get_feature_report(&mut read_bfr)
+        .unwrap();
 
-    let mut battery_percentage = bfr_r[8];
+    let mut battery_percentage = read_bfr[8];
 
     if battery_percentage == 0 {
         battery_percentage = 1;
@@ -28,10 +28,10 @@ pub fn get(hid_device: &HidDevice) {
 
     let mut status = [0xA1, 0xA4, 0xA2, 0xA0, 0xA3]
         .iter()
-        .position(|&s| { s == bfr_r[1] })
-        .unwrap(); // TODO: error handling
+        .position(|&s| { s == read_bfr[1] })
+        .unwrap();
 
-    if bfr_r[6] != 0x83 {
+    if read_bfr[6] != 0x83 {
         status = 2;
     }
 
