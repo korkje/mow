@@ -13,8 +13,7 @@ pub fn parse(str: &str) -> Result<Hex, &'static str> {
 
     let parsed = match u32::from_str_radix(str, 16) {
         Ok(value) => value,
-        Err(_) =>
-            return Err("Could not parse color hex!"),
+        Err(_) => return Err("Could not parse color hex!"),
     };
 
     let [_, red, green, blue] = parsed.to_be_bytes();
@@ -42,11 +41,7 @@ pub fn print(colors: Vec<Hex>) {
             hex.blue.to_string().bold(),
             " Color".bold(),
             "\u{2588}\u{2588}\u{2588}"
-                .truecolor(
-                    hex.red,
-                    hex.green,
-                    hex.blue,
-                )
+                .truecolor( hex.red, hex.green, hex.blue)
         );
     }
 }

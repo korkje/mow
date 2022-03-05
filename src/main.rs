@@ -40,8 +40,7 @@ enum Kind {
     #[clap(hide = true)]
     Hex {
         #[clap(
-            min_values = 1,
-            max_values = 3,
+            min_values = 1, max_values = 3,
             parse(try_from_str = hex::parse)
         )]
         colors: Vec<Hex>
@@ -69,8 +68,7 @@ enum Config {
     LEDEffect {
         // Profile id (1-3)
         #[clap(
-            short,
-            long,
+            short, long,
             help = "[default: 1]",
             possible_values(["1", "2", "3"])
         )]
@@ -145,8 +143,7 @@ pub enum Effect {
 
         /// From 2 to 6 colors in hex format
         #[clap(
-            min_values = 1,
-            max_values = 6,
+            min_values = 1, max_values = 6,
             parse(try_from_str = hex::parse)
         )]
         colors: Vec<Hex>
@@ -174,8 +171,7 @@ pub enum Effect {
 
         /// 1 or 2 colors in hex format
         #[clap(
-            min_values = 1,
-            max_values = 2,
+            min_values = 1, max_values = 2,
             parse(try_from_str = hex::parse)
         )]
         colors: Vec<Hex>
@@ -187,7 +183,7 @@ pub enum Effect {
         #[clap(short, long)]
         rate: Option<u8>,
     },
-    
+
     /// No effect, LED off
     Off, 
 }
@@ -197,8 +193,7 @@ fn main() {
     let args = Args::parse();
     
     // Interface with platform specific 'hidapi'
-    let hid_api = HidApi::new()
-        .unwrap();
+    let hid_api = HidApi::new().unwrap();
 
     // Try to find a matching device
     let device_info = hid_api
@@ -208,13 +203,8 @@ fn main() {
             d.interface_number() == 2 &&
 
             // Glorious' vendor id
-            d.vendor_id() == 0x258a && (
-                // Product id (wireless)
-                d.product_id() == 0x2022 ||
-
-                // Product id (wired)
-                d.product_id() == 0x2011
-            )
+            d.vendor_id() == 0x258a &&
+            [0x2022, 0x2011].contains(&d.product_id())
         })
         .none("No matching device found!");
 
@@ -222,9 +212,7 @@ fn main() {
     let wired = device_info.product_id() == 0x2011;
 
     // Connect to the device
-    let hid_device = hid_api
-        .open_path(device_info.path())
-        .unwrap(); // TODO: error handling
+    let device = device_info.open_device(&hid_api).unwrap();
 
     // Act upon command line arguments
     match args.kind {
@@ -232,38 +220,30 @@ fn main() {
         Kind::Report(report) => match report {
             // mow report battery
             Report::Battery =>
-                report::battery::get(&hid_device),
+                report::battery::get(&device),
 
             // mow report firmware
             Report::Firmware =>
-                report::firmware::get(&hid_device, wired),
+                report::firmware::get(&device, wired),
         },
 
         // mow config
         Kind::Config(config) => match config {
             // mow config profile <ID>
             Config::Profile { id } =>
-                config::profile::set(&hid_device, id),
+                config::profile::set(&device, id),
 
             // mow config sleep <MINUTES> [SECONDS]
             Config::Sleep { minutes, seconds} =>
-                config::sleep::set(
-                    &hid_device,
-                    minutes,
-                    seconds
-                ),
+                config::sleep::set(&device, minutes, seconds),
 
             // mow config led-brightness <WIRED> [WIRELESS]
             Config::LEDBrightness { wired, wireless } =>
-                config::led_brightness::set(
-                    &hid_device,
-                    wired,
-                    wireless
-                ),
+                config::led_brightness::set(&device, wired, wireless),
 
             // mow config led-brightness <EFFECT> ...
             Config::LEDEffect { profile, effect }  =>
-                config::led_effect::set(&hid_device, profile, effect),
+                config::led_effect::set(&device, profile, effect),
 
             _ => println!("(not implemented)"),
         },

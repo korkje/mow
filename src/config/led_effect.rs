@@ -4,7 +4,7 @@ use crate::Effect;
 const PROFILE: u8 = 1;
 const RATE: u8 = 40;
 
-pub fn set(hid_device: &HidDevice, profile: Option<u8>, effect: Effect) {
+pub fn set(device: &HidDevice, profile: Option<u8>, effect: Effect) {
     let mut bfr = [0u8; 65];
 
     let profile_id = profile.unwrap_or(PROFILE);
@@ -95,7 +95,5 @@ pub fn set(hid_device: &HidDevice, profile: Option<u8>, effect: Effect) {
         },
     }
 
-    hid_device
-        .send_feature_report(&bfr)
-        .unwrap();
+    device.send_feature_report(&bfr).unwrap();
 }
