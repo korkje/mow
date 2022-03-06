@@ -63,14 +63,14 @@ fn main() {
             Config::LEDBrightness { wired, wireless } =>
                 config::led_brightness::set(&device, wired, wireless),
 
-            // mow config led-brightness <EFFECT> ...
+            // mow config led-effect <EFFECT> ...
             Config::LEDEffect { profile, effect }  =>
                 config::led_effect::set(&device, profile, effect),
 
             _ => println!("(not implemented)"),
         },
 
-        // mow hex <HEX>
+        // mow hex <HEX>...
         Kind::Hex { colors } => color::print(colors),
     }
 }
