@@ -33,6 +33,7 @@ pub enum Kind {
     #[clap(hide = true)]
     Hex {
         #[clap(
+            required = true,
             min_values = 1, max_values = 3,
             parse(try_from_str = color::parse_hex)
         )]
@@ -136,6 +137,7 @@ pub enum Effect {
 
         /// From 2 to 6 colors in hex format
         #[clap(
+            required = true,
             min_values = 2, max_values = 6,
             parse(try_from_str = color::parse_hex)
         )]
@@ -174,6 +176,7 @@ pub enum Effect {
 
         /// 1 or 2 colors in hex format
         #[clap(
+            required = true,
             min_values = 1, max_values = 2,
             parse(try_from_str = color::parse_hex)
         )]

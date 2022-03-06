@@ -34,7 +34,7 @@ fn main() {
     let wired = device_info.product_id() == 0x2011;
 
     // Connect to the device
-    let device = hid_api.open_path(device_info.path()).unwrap();
+    let device = device_info.open_device(&hid_api).unwrap();
 
     // Act upon command line arguments
     match args.kind {
