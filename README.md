@@ -12,17 +12,31 @@ The CLI tool is written in Rust. I've tried to keep it somewhat readable, howeve
 
 ### Reports
 - [x] Battery percentage
+- [x] Firmware version
 
 ### Configuration
-- [x] LED brightness
-- [x] LED Effects (all of them!)
+- [x] LED
+    - [x] Brightness
+    - [x] Effects
+        - [x] Glorious
+        - [x] Seamless breathing
+        - [x] Breathing
+        - [x] Single color
+        - [x] Breathing single color
+        - [x] Tail
+        - [x] Rave
+        - [x] Wave
+        - [x] Off
 - [x] Active profile
 - [x] Sleep delay
-- [ ] Key/macro related stuff
-- [ ] DPI (active, stages, colors)
-- [ ] Calibration (?)
-- [ ] Polling rate
-- [ ] Debounce
+- [x] Lift-off distance
+- [x] Polling rate
+- [x] Debounce
+- [ ] Key/macro stuff
+- [ ] DPI
+    - [x] Active
+    - [ ] Stages
+    - [ ] Colors
 
 At some point, after this is done, I might work on creating a daemon that can listen for "commands" from the device. This will be needed to make the most advanced macros work, like launching applications and various other OS specific stuff.
 
@@ -31,12 +45,7 @@ It is a Rust (Cargo) project, so just run `cargo build --release` in the root fo
 
 ### Arch Linux
 
-On Arch linux, you can install it from AUR:
-
-``` bash
-paru -S mow-git
-```
-
+On Arch linux, you can install it from AUR with `paru -S mow-git`.
 
 ## Misc
 With some minor alteration, my findings probably also apply to Model D as well as reduced size versions of both devices. But unless someone wants to buy me the extra devices, I will not extend support myself, at least for now.
