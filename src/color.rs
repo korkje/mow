@@ -1,12 +1,12 @@
 use colored::Colorize;
 
-pub struct Hex {
+pub struct Color {
     pub red: u8,
     pub green: u8,
     pub blue: u8,
 }
 
-pub fn parse(str: &str) -> Result<Hex, &'static str> {
+pub fn parse_hex(str: &str) -> Result<Color, &'static str> {
     if str.len() != 6 {
         return Err("Color hex must be of length 6!");
     }
@@ -18,12 +18,12 @@ pub fn parse(str: &str) -> Result<Hex, &'static str> {
 
     let [_, red, green, blue] = parsed.to_be_bytes();
 
-    let hex = Hex { red, green, blue };
+    let hex = Color { red, green, blue };
 
     Ok(hex)
 }
 
-pub fn print(colors: Vec<Hex>) {
+pub fn print(colors: Vec<Color>) {
     for i in 0..colors.len() {
         let hex = &colors[i];
 
@@ -40,8 +40,7 @@ pub fn print(colors: Vec<Hex>) {
             "[B]lue".blue().bold(),
             hex.blue.to_string().bold(),
             " Color".bold(),
-            "\u{2588}\u{2588}\u{2588}"
-                .truecolor( hex.red, hex.green, hex.blue)
+            "   ".on_truecolor(hex.red, hex.green, hex.blue)
         );
     }
 }

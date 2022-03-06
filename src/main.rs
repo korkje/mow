@@ -1,12 +1,12 @@
 pub mod report;
 pub mod config;
-pub mod hex;
+pub mod color;
 pub mod none;
 
 use clap::{ self, Parser, Subcommand };
 use hidapi::HidApi;
 use none::None;
-use hex::Hex;
+use color::Color;
 
 #[derive(Parser)]
 #[clap(
@@ -41,9 +41,9 @@ enum Kind {
     Hex {
         #[clap(
             min_values = 1, max_values = 3,
-            parse(try_from_str = hex::parse)
+            parse(try_from_str = color::parse_hex)
         )]
-        colors: Vec<Hex>
+        colors: Vec<Color>
     },
 }
 
@@ -144,16 +144,16 @@ pub enum Effect {
         /// From 2 to 6 colors in hex format
         #[clap(
             min_values = 1, max_values = 6,
-            parse(try_from_str = hex::parse)
+            parse(try_from_str = color::parse_hex)
         )]
-        colors: Vec<Hex>
+        colors: Vec<Color>
     },
 
     /// Solid color
     Solid {
         /// Color in hex format
-        #[clap(parse(try_from_str = hex::parse))]
-        color: Hex
+        #[clap(parse(try_from_str = color::parse_hex))]
+        color: Color
     },
 
     /// Glorious, but colors don't "move"
@@ -172,9 +172,9 @@ pub enum Effect {
         /// 1 or 2 colors in hex format
         #[clap(
             min_values = 1, max_values = 2,
-            parse(try_from_str = hex::parse)
+            parse(try_from_str = color::parse_hex)
         )]
-        colors: Vec<Hex>
+        colors: Vec<Color>
     },
 
     /// Glorious, but more circus
@@ -249,6 +249,6 @@ fn main() {
         },
 
         // mow hex <HEX>
-        Kind::Hex { colors } => hex::print(colors),
+        Kind::Hex { colors } => color::print(colors),
     }
 }
