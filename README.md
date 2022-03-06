@@ -43,6 +43,10 @@ At some point, after this is done, I might work on creating a daemon that can li
 ## Installation
 It is a Rust (Cargo) project, so just run `cargo build --release` in the root folder, create a symlink somewhere in your `PATH`, and you should be good to go. The CLI has built in `--help`, so use that to understand usage.
 
+### Arch Linux
+
+On Arch linux, you can install it from AUR with `paru -S mow-git`.
+
 ## Misc
 With some minor alteration, my findings probably also apply to Model D as well as reduced size versions of both devices. But unless someone wants to buy me the extra devices, I will not extend support myself, at least for now.
 
