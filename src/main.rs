@@ -64,8 +64,17 @@ fn main() {
                 config::led_brightness::set(&device, wired, wireless),
 
             // mow config led-effect <EFFECT> ...
-            Config::LEDEffect { profile, effect }  =>
+            Config::LEDEffect { profile, effect } =>
                 config::led_effect::set(&device, profile, effect),
+
+            Config::PollingRate { ms } =>
+                config::polling_rate::set(&device, ms),
+
+            Config::LiftOff { mm } =>
+                config::polling_rate::set(&device, mm),
+
+            Config::Debounce { profile, ms } =>
+                config::debounce::set(&device, profile, ms),
 
             _ => println!("(not implemented)"),
         },
