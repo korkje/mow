@@ -12,7 +12,6 @@ The CLI tool is written in Rust. I've tried to keep it somewhat readable, howeve
 
 ### Reports
 - [x] Battery percentage
-- [x] Battery percentage
 
 ### Configuration
 - [x] LED brightness
