@@ -50,3 +50,8 @@ On Arch linux, you can install this from [AUR](https://aur.archlinux.org) with `
 With some minor alteration, my findings probably also apply to Model D as well as reduced size versions of both devices. But unless someone wants to buy me the extra devices, I will not extend support myself, at least for now.
 
 I am working on a separate detailed writeup describing the protocol in it's entirety, will probably commit those docs into this repo sooner or later, but there's way too much "maybe this, maybe that" and otherwise speculative language in there still.
+
+## Safety
+Should you be so unlucky as to somehow brick your device (as I have done myself repeatedly while working on this project), there is the option of factory resetting by pressing down both left and right mouse buttons and the scroll wheel, and hold for five seconds while the device flashes green.
+
+However, I do not have insight into the inner workings of this device, and can therefore NOT guarantee all faults will be recoverable. Use this at your own risk!
