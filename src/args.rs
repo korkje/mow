@@ -89,9 +89,6 @@ pub enum Config {
         seconds: Option<u8>,
     },
 
-    /// (not implemented)
-    DPIStages,
-
     /// Active DPI stage by id
     DPIStage {
         // Profile id (1-3)
@@ -106,8 +103,43 @@ pub enum Config {
         id: u8,
     },
 
-    /// (not implemented)
-    DPIColors,
+    /// Set DPI stages (200-19000)
+    DPIStages {
+        // Profile id (1-3)
+        #[clap(
+            short, long,
+            help = "[default: 1]",
+            possible_values(["1", "2", "3"])
+        )]
+        profile: Option<u8>,
+
+        #[clap(
+            name = "stage",
+            number_of_values = 4,
+            validator = in_range(&(100..=19000)),
+            default_values(&["400", "800", "1600", "3200"]),
+        )]
+        stages: Vec<u16>,
+    },
+
+    /// Set DPI stage colors 
+    DPIColors {
+        // Profile id (1-3)
+        #[clap(
+            short, long,
+            help = "[default: 1]",
+            possible_values(["1", "2", "3"])
+        )]
+        profile: Option<u8>,
+
+        #[clap(
+            name = "COLOR",
+            number_of_values = 4,
+            parse(try_from_str = color::parse_hex),
+            default_values(&["FFFF00", "0000FF", "FF0000", "00FF00"]),
+        )]
+        colors: Vec<Color>,
+    },
 
     /// Lift-off distance in mm
     LiftOff {

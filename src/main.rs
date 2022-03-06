@@ -83,6 +83,14 @@ fn main() {
             Config::DPIStage { profile, id } =>
                 config::dpi_stage::set(&device, profile, id),
 
+            // mow config dpi-stages <STAGES>...
+            Config::DPIStages { profile, stages } =>
+                config::dpi_stages::set(&device, profile, stages),
+
+            // mow config dpi-colors <COLORS>...
+            Config::DPIColors { profile, colors } =>
+                config::dpi_colors::set(&device, profile, colors),
+
             _ => println!("(not implemented)"),
         },
 

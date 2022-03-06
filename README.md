@@ -32,11 +32,11 @@ The CLI tool is written in Rust. I've tried to keep it somewhat readable, howeve
 - [x] Lift-off distance
 - [x] Polling rate
 - [x] Debounce
-- [ ] Key/macro stuff
-- [ ] DPI
+- [x] DPI
     - [x] Active
-    - [ ] Stages
-    - [ ] Colors
+    - [x] Stages
+    - [x] Colors
+- [ ] Key/macro stuff
 
 At some point, after this is done, I might work on creating a daemon that can listen for "commands" from the device. This will be needed to make the most advanced macros work, like launching applications and various other OS specific stuff.
 
