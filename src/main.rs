@@ -67,14 +67,21 @@ fn main() {
             Config::LEDEffect { profile, effect } =>
                 config::led_effect::set(&device, profile, effect),
 
+            // mow config polling-rate <MS>
             Config::PollingRate { ms } =>
                 config::polling_rate::set(&device, ms),
 
+            // mow config lift-off <MM>
             Config::LiftOff { mm } =>
                 config::polling_rate::set(&device, mm),
 
+            // mow config debounce <MS>
             Config::Debounce { profile, ms } =>
                 config::debounce::set(&device, profile, ms),
+
+            // mow config dpi-stage <ID>
+            Config::DPIStage { profile, id } =>
+                config::dpi_stage::set(&device, profile, id),
 
             _ => println!("(not implemented)"),
         },

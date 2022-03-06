@@ -92,8 +92,19 @@ pub enum Config {
     /// (not implemented)
     DPIStages,
 
-    /// (not implemented)
-    DPIStage,
+    /// Active DPI stage by id
+    DPIStage {
+        // Profile id (1-3)
+        #[clap(
+            short, long,
+            help = "[default: 1]",
+            possible_values(["1", "2", "3"])
+        )]
+        profile: Option<u8>,
+
+        #[clap(possible_values(["1", "2", "3", "4"]))]
+        id: u8,
+    },
 
     /// (not implemented)
     DPIColors,

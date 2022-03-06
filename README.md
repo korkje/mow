@@ -34,7 +34,7 @@ The CLI tool is written in Rust. I've tried to keep it somewhat readable, howeve
 - [x] Debounce
 - [ ] Key/macro stuff
 - [ ] DPI
-    - [ ] Active
+    - [x] Active
     - [ ] Stages
     - [ ] Colors
 

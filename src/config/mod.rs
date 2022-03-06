@@ -5,3 +5,6 @@ pub mod led_effect;
 pub mod polling_rate;
 pub mod lift_off;
 pub mod debounce;
+pub mod dpi_stage;
+pub mod dpi_stages;
+pub mod dpi_colors;
