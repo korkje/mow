@@ -31,6 +31,9 @@ pub enum Kind {
     #[clap(subcommand)]
     Config(Config),
 
+    /// (not implemented)
+    Daemon,
+
     #[clap(hide = true)]
     Hex {
         #[clap(
@@ -171,7 +174,7 @@ pub enum Config {
     Macro,
 
     /// (not implemented)
-    Key,
+    Keys,
 }
 
 #[derive(Subcommand)]

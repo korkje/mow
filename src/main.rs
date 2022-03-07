@@ -94,6 +94,9 @@ fn main() {
             _ => println!("(not implemented)"),
         },
 
+        // mow daemon
+        Kind::Daemon => println!("(not implemented)"),
+
         // mow hex <HEX>...
         Kind::Hex { colors } => color::print(colors),
     }
