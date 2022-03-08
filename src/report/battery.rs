@@ -1,3 +1,4 @@
+use colored::Colorize;
 use hidapi::HidDevice;
 use std::{ thread, time::{ Duration } };
 
@@ -16,10 +17,10 @@ pub fn get(device: &HidDevice, wired: bool) {
 
     device.get_feature_report(&mut bfr_r).unwrap();
 
-    let mut battery_percentage = bfr_r[8];
+    let mut percentage = bfr_r[8];
 
-    if battery_percentage == 0 {
-        battery_percentage = 1;
+    if percentage == 0 {
+        percentage = 1;
     }
 
     let mut status = [0xA1, 0xA4, 0xA2, 0xA0, 0xA3]
@@ -30,14 +31,22 @@ pub fn get(device: &HidDevice, wired: bool) {
     }
 
     match (status, wired) {
-        (0, false) => println!("{}%", battery_percentage),
-        (0, true) => println!("(charging) {}%", battery_percentage),
-        (1, _) => println!("zzz..."),
+        (0, false) => println!("{}%", percentage),
+        (0, true) => {
+            let charging_status = match percentage {
+                0..=24 => "charging".red(),
+                25..=74 => "charging".yellow(),
+                75..=99 => "charging".green(),
+                100.. => "fully charged".green().bold(),
+            };
+            println!("{}% ({})", percentage, charging_status)
+        },
+        (1, _) => println!("(asleep)"),
+        (3, _) => print!("(waking up)"),
         (_, _) => {
-            println!("(unknown status)");
             println!(
-                "01 06 08\n{:0>2X} {:0>2X} {:0>2X}",
-                bfr_r[1], bfr_r[6], bfr_r[8],
+                "[1:{:0>2X}, 6:{:0>2X}, 8:{:0>2X}] ({})",
+                bfr_r[1], bfr_r[6], bfr_r[8], "unknown status".red().bold(), 
             );
         },
     }
