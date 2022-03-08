@@ -39,7 +39,7 @@ pub enum Kind {
         #[clap(
             required = true,
             min_values = 1, max_values = 3,
-            parse(try_from_str = color::parse_hex)
+            parse(try_from_str = color::parse_hex),
         )]
         colors: Vec<Color>
     },
@@ -59,7 +59,7 @@ pub enum Config {
     /// Active profile by id
     Profile {
         #[clap(possible_values(["1", "2", "3"]))]
-        id: u8
+        id: u8,
     },
 
     /// LED Effect
@@ -68,12 +68,12 @@ pub enum Config {
         #[clap(
             short, long,
             help = "[default: 1]",
-            possible_values(["1", "2", "3"])
+            possible_values(["1", "2", "3"]),
         )]
         profile: Option<u8>,
 
         #[clap(subcommand)]
-        effect: Effect
+        effect: Effect,
     },
 
     /// LED brightness value[s] (0-255)
@@ -98,7 +98,7 @@ pub enum Config {
         #[clap(
             short, long,
             help = "[default: 1]",
-            possible_values(["1", "2", "3"])
+            possible_values(["1", "2", "3"]),
         )]
         profile: Option<u8>,
 
@@ -162,7 +162,7 @@ pub enum Config {
         #[clap(
             short, long,
             help = "[default: 1]",
-            possible_values(["1", "2", "3"])
+            possible_values(["1", "2", "3"]),
         )]
         profile: Option<u8>,
 
@@ -184,7 +184,8 @@ pub enum Effect {
         /// Effect rate, 0-100
         #[clap(
             short, long,
-            validator = in_range(&(0..=100))
+            help = "[default: 40]",
+            validator = in_range(&(0..=100)),
         )]
         rate: Option <u8>,
     },
@@ -194,7 +195,8 @@ pub enum Effect {
         /// Effect rate, 0-100
         #[clap(
             short, long,
-            validator = in_range(&(0..=100))
+            help = "[default: 40]",
+            validator = in_range(&(0..=100)),
         )]
         rate: Option<u8>,
     },
@@ -204,7 +206,8 @@ pub enum Effect {
         /// Effect rate, 0-100
         #[clap(
             short, long,
-            validator = in_range(&(0..=100))
+            help = "[default: 40]",
+            validator = in_range(&(0..=100)),
         )]
         rate: Option<u8>,
 
@@ -212,16 +215,16 @@ pub enum Effect {
         #[clap(
             required = true,
             min_values = 2, max_values = 6,
-            parse(try_from_str = color::parse_hex)
+            parse(try_from_str = color::parse_hex),
         )]
-        colors: Vec<Color>
+        colors: Vec<Color>,
     },
 
     /// Solid color
     Solid {
         /// Color in hex format
         #[clap(parse(try_from_str = color::parse_hex))]
-        color: Color
+        color: Color,
     },
 
     /// Pulse on/off one color
@@ -229,7 +232,8 @@ pub enum Effect {
         /// Effect rate, 0-100
         #[clap(
             short, long,
-            validator = in_range(&(0..=100))
+            help = "[default: 40]",
+            validator = in_range(&(0..=100)),
         )]
         rate: Option<u8>,
 
@@ -242,7 +246,8 @@ pub enum Effect {
         /// Effect rate, 0-100
         #[clap(
             short, long,
-            validator = in_range(&(0..=100))
+            help = "[default: 40]",
+            validator = in_range(&(0..=100)),
         )]
         rate: Option<u8>,
     },
@@ -252,7 +257,8 @@ pub enum Effect {
         /// Effect rate, 0-100
         #[clap(
             short, long,
-            validator = in_range(&(0..=100))
+            help = "[default: 40]",
+            validator = in_range(&(0..=100)),
         )]
         rate: Option<u8>,
 
@@ -260,9 +266,9 @@ pub enum Effect {
         #[clap(
             required = true,
             min_values = 1, max_values = 2,
-            parse(try_from_str = color::parse_hex)
+            parse(try_from_str = color::parse_hex),
         )]
-        colors: Vec<Color>
+        colors: Vec<Color>,
     },
 
     /// Glorious, but more circus
@@ -270,7 +276,8 @@ pub enum Effect {
         /// Effect rate, 0-100
         #[clap(
             short, long,
-            validator = in_range(&(0..=100))
+            help = "[default: 40]",
+            validator = in_range(&(0..=100)),
         )]
         rate: Option<u8>,
     },
