@@ -30,19 +30,6 @@ pub enum Kind {
     /// Change the device's various settings
     #[clap(subcommand)]
     Config(Config),
-
-    /// (not implemented)
-    Daemon,
-
-    #[clap(hide = true)]
-    Hex {
-        #[clap(
-            required = true,
-            min_values = 1, max_values = 3,
-            parse(try_from_str = color::parse_hex)
-        )]
-        colors: Vec<Color>
-    },
 }
 
 #[derive(Subcommand)]

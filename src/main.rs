@@ -5,8 +5,6 @@ pub mod report;
 
 use clap::Parser;
 use hidapi::HidApi;
-
-use lib::color;
 use lib::none::None;
 use args::{ Args, Kind, Report, Config };
 
@@ -22,13 +20,13 @@ fn main() {
         .device_list()
         .filter(|d| {
             // Glorious' vendor id
-            d.vendor_id() == 0x258a &&
+            d.vendor_id() == 0x258A &&
 
             // Model O product id
             [0x2011, 0x2022].contains(&d.product_id()) &&
 
-            // "Usage" and "Usage page"
-            (d.usage(), d.usage_page()) == (0x00, 0xFFFF)
+            // Feature report interface
+            d.interface_number() == 0x02
         })
         // Get wired (0x2011) if available
         .min_by(|a, b| a.product_id().cmp(&b.product_id()))
@@ -97,11 +95,5 @@ fn main() {
 
             _ => println!("(not implemented)"),
         },
-
-        // mow daemon
-        Kind::Daemon => println!("('daemon' not yet implemented)"),
-
-        // mow hex <HEX>...
-        Kind::Hex { colors } => color::print(colors),
     }
 }
