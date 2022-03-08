@@ -20,14 +20,18 @@ fn main() {
     // Try to find a matching device
     let device_info = hid_api
         .device_list()
-        .find(|d| {
-            // Configuration interface
-            d.interface_number() == 2 &&
-
+        .filter(|d| {
             // Glorious' vendor id
             d.vendor_id() == 0x258a &&
-            [0x2022, 0x2011].contains(&d.product_id())
+
+            // Model O product id
+            [0x2011, 0x2022].contains(&d.product_id()) &&
+
+            // "Usage" and "Usage page"
+            (d.usage(), d.usage_page()) == (0x00, 0xFFFF)
         })
+        // Get wired (0x2011) if available
+        .min_by(|a, b| a.product_id().cmp(&b.product_id()))
         .none("No matching device found!");
 
     // Product id indicates whether wired
@@ -42,7 +46,7 @@ fn main() {
         Kind::Report(report) => match report {
             // mow report battery
             Report::Battery =>
-                report::battery::get(&device),
+                report::battery::get(&device, wired),
 
             // mow report firmware
             Report::Firmware =>
@@ -95,7 +99,7 @@ fn main() {
         },
 
         // mow daemon
-        Kind::Daemon => println!("(not implemented)"),
+        Kind::Daemon => println!("('daemon' not yet implemented)"),
 
         // mow hex <HEX>...
         Kind::Hex { colors } => color::print(colors),

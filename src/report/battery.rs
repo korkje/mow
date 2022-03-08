@@ -1,7 +1,7 @@
 use hidapi::HidDevice;
 use std::{ thread, time::{ Duration } };
 
-pub fn get(device: &HidDevice) {
+pub fn get(device: &HidDevice, wired: bool) {
     let mut bfr_w = [0u8; 65];
 
     bfr_w[3] = 0x02;
@@ -12,29 +12,33 @@ pub fn get(device: &HidDevice) {
 
     thread::sleep(Duration::from_millis(50));
 
-    let mut read_bfr = [0u8; 65];
+    let mut bfr_r = [0u8; 65];
 
-    device.get_feature_report(&mut read_bfr).unwrap();
+    device.get_feature_report(&mut bfr_r).unwrap();
 
-    let mut battery_percentage = read_bfr[8];
+    let mut battery_percentage = bfr_r[8];
 
     if battery_percentage == 0 {
         battery_percentage = 1;
     }
 
     let mut status = [0xA1, 0xA4, 0xA2, 0xA0, 0xA3]
-        .iter().position(|&s| { s == read_bfr[1] }).unwrap();
+        .iter().position(|&s| { s == bfr_r[1] }).unwrap();
 
-    if read_bfr[6] != 0x83 {
+    if bfr_r[6] != 0x83 {
         status = 2;
     }
 
-    let is_sleeping = status == 1;
-
-    if is_sleeping {
-        println!("zzz...")
-    }
-    else {
-        println!("{}%", battery_percentage);
+    match (status, wired) {
+        (0, false) => println!("{}%", battery_percentage),
+        (0, true) => println!("(charging) {}%", battery_percentage),
+        (1, _) => println!("zzz..."),
+        (_, _) => {
+            println!("(unknown status)");
+            println!(
+                "01 06 08\n{:0>2X} {:0>2X} {:0>2X}",
+                bfr_r[1], bfr_r[6], bfr_r[8],
+            );
+        },
     }
 }
