@@ -58,7 +58,7 @@ fn main() {
                 config::bind::set(&device, profile, button, binding),
 
             // mow config scroll <DIRECTION>
-            Config::Scroll(direction) => 
+            Config::Scroll { direction } => 
                 config::scroll::set(&device, direction),
 
             // mow config profile <ID>

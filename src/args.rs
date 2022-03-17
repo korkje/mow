@@ -177,12 +177,14 @@ pub enum Config {
     },
 
     /// Scroll inversion
-    #[clap(subcommand)]
-    Scroll(Direction),
+    Scroll {
+        #[clap(arg_enum)]
+        direction: ScrollDirection,
+    },
 }
 
-#[derive(Subcommand)]
-pub enum Direction {
+#[derive(Clone, ArgEnum)]
+pub enum ScrollDirection {
     Default,
     Invert,
 }

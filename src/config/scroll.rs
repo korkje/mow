@@ -1,11 +1,11 @@
 use hidapi::HidDevice;
-use crate::args::{Direction, Button, Binding, MouseFn};
+use crate::args::{ScrollDirection, Button, Binding, MouseFn};
 use super::bind;
 
-pub fn set(device: &HidDevice, direction: Direction) {
+pub fn set(device: &HidDevice, direction: ScrollDirection) {
     for i in 1..=3 {
         match direction {
-            Direction::Default => {
+            ScrollDirection::Default => {
                 // Up => Up
                 bind::set(
                     device, Some(i),
@@ -21,7 +21,7 @@ pub fn set(device: &HidDevice, direction: Direction) {
                 );
             },
 
-            Direction::Invert => {
+            ScrollDirection::Invert => {
                 // Up => Down
                 bind::set(
                     device, Some(i),
