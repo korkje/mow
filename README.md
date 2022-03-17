@@ -1,4 +1,5 @@
 # Model O Wireless (mow)
+Cross platform CLI for configuring Glorious Model O Wireless.
 
 ## Goal
 The goal of this project is to reverse engineer the communication between Glorious Core and the Model O Wireless mouse, so the mouse can be used (more or less feature complete) on all platforms.
