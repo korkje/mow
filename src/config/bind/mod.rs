@@ -1,5 +1,8 @@
 pub mod key;
 pub mod mouse;
+pub mod media;
+pub mod dpi;
+pub mod keyboard;
 
 use colored::Colorize;
 use hidapi::HidDevice;
@@ -22,8 +25,19 @@ pub fn set(device: &HidDevice, profile: Option<u8>, button: Button, binding: Bin
         Binding::Key { kind } =>
             key::set(&mut bfr[10..], kind),
 
-        Binding::Mouse(kind) =>
-            mouse::set(&mut bfr[10..], kind),
+        Binding::Mouse(mouse_fn) =>
+            mouse::set(&mut bfr[10..], mouse_fn),
+
+        Binding::Keyboard(keyboard_fn) =>
+            keyboard::set(&mut bfr[10..], keyboard_fn),
+
+        Binding::Media(media_fn) =>
+            media::set(&mut bfr[10..], media_fn),
+
+        Binding::DPI(dpi_fn) =>
+            dpi::set(&mut bfr[10..], dpi_fn),
+
+        Binding::None => (),
 
         _ => println!("(not implemented)"),
     }

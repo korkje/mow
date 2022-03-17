@@ -318,26 +318,29 @@ pub enum Binding {
         kind: KeyKind,
     },
     
-    /// (not implemented) Keyboard function
-    Keyboard,
+    /// Keyboard function
+    #[clap(subcommand)]
+    Keyboard(KeyboardFn),
     
     /// Mouse function
     #[clap(subcommand)]
     Mouse(MouseFn),
     
-    /// (not implemented) DPI modifier
-    DPI,
+    /// DPI modifier
+    #[clap(subcommand)]
+    DPI(DPIFn),
     
     /// (not implemented) Macro
     Macro,
     
-    /// (not implemented) Multimedia
-    Media,
+    /// Multimedia
+    #[clap(subcommand)]
+    Media(MediaFn),
     
     /// (not implemented) Launch applications etc.
     Shortcut,
     
-    /// (not implemented) Do nothing
+    /// Do nothing
     None,
 }
 
@@ -390,10 +393,37 @@ pub enum MouseFn {
     Scroll,
     Forward,
     Back,
-    DPI,
     ScrollUp,
     ScrollDown,
     ProfileCycleUp,
     ProfileCycleDown,
     BatteryStatus,
+}
+
+#[derive(Subcommand)]
+pub enum KeyboardFn {
+    ProfileCycleUp,
+    ProfileCycleDown,
+    LayerCycleUp,
+    LayerCycleDown,
+}
+
+#[derive(Subcommand)]
+pub enum DPIFn {
+    StageUp,
+    StageDown,
+    CycleUp,
+    CycleDown,
+}
+
+#[derive(Subcommand)]
+pub enum MediaFn {
+    Player,
+    PlayPause,
+    Next,
+    Previous,
+    Stop,
+    Mute,
+    VolumeUp,
+    VolumeDown,
 }
