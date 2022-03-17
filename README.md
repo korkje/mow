@@ -36,9 +36,21 @@ The CLI tool is written in Rust. I've tried to keep it somewhat readable, howeve
     - [x] Active
     - [x] Stages
     - [x] Colors
-- [ ] Key/macro stuff
+- [x] Scroll inversion (NEW)
+- [ ] Key binding
+    - [x] Single key
+        - [x] Scan code
+        - [x] Key code
+        - [x] Code
+    - [ ] Keyboard function
+    - [x] Mouse function
+    - [ ] DPI modifier
+    - [ ] Macro
+    - [ ] Multimedia
+    - [ ] Shortcuts
+    - [ ] None
 
-At some point, after this is done, I might work on creating a daemon that can listen for "commands" from the device. This will be needed to make the most advanced macros work, like launching applications and various other OS specific stuff.
+At some point, after this is done, I might work on creating a daemon that can listen for "commands" from the device. This will be needed to make the most advanced key bindings work, e.g. launching applications.
 
 ## Installation
 It is a Rust (Cargo) project, so just run `cargo build --release` in the root folder, create a symlink somewhere in your `PATH`, and you should be good to go. The CLI has built in `--help`, so use that to understand usage.

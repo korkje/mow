@@ -53,6 +53,14 @@ fn main() {
 
         // mow config
         Kind::Config(config) => match config {
+            // mow config bind ...
+            Config::Bind { profile, button, binding } =>
+                config::bind::set(&device, profile, button, binding),
+
+            // mow config scroll <DIRECTION>
+            Config::Scroll(direction) => 
+                config::scroll::set(&device, direction),
+
             // mow config profile <ID>
             Config::Profile { id } =>
                 config::profile::set(&device, id),
@@ -92,8 +100,6 @@ fn main() {
             // mow config dpi-colors <COLORS>...
             Config::DPIColors { profile, colors } =>
                 config::dpi_colors::set(&device, profile, colors),
-
-            _ => println!("(not implemented)"),
         },
     }
 }

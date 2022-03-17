@@ -8,3 +8,5 @@ pub mod debounce;
 pub mod dpi_stage;
 pub mod dpi_stages;
 pub mod dpi_colors;
+pub mod bind;
+pub mod scroll;

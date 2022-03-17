@@ -1,5 +1,6 @@
-use clap::{ self, Parser, Subcommand };
+use clap::{ self, Parser, Subcommand, ArgEnum };
 use crate::lib::color::{ self, Color};
+use crate::lib::key::{ self, Key };
 use crate::lib::range::in_range;
 
 #[derive(Parser)]
@@ -51,7 +52,7 @@ pub enum Config {
 
     /// LED Effect
     LEDEffect {
-        // Profile id (1-3)
+        /// Profile id (1-3)
         #[clap(
             short, long,
             help = "[default: 1]",
@@ -81,7 +82,7 @@ pub enum Config {
 
     /// Active DPI stage by id
     DPIStage {
-        // Profile id (1-3)
+        /// Profile id (1-3)
         #[clap(
             short, long,
             help = "[default: 1]",
@@ -95,7 +96,7 @@ pub enum Config {
 
     /// Set DPI stages (200-19000)
     DPIStages {
-        // Profile id (1-3)
+        /// Profile id (1-3)
         #[clap(
             short, long,
             help = "[default: 1]",
@@ -114,7 +115,7 @@ pub enum Config {
 
     /// Set DPI stage colors 
     DPIColors {
-        // Profile id (1-3)
+        /// Profile id (1-3)
         #[clap(
             short, long,
             help = "[default: 1]",
@@ -145,7 +146,7 @@ pub enum Config {
 
     /// Debounce in ms (0-16)
     Debounce {
-        // Profile id (1-3)
+        /// Profile id (1-3)
         #[clap(
             short, long,
             help = "[default: 1]",
@@ -157,11 +158,33 @@ pub enum Config {
         ms: u8,
     },
 
-    /// (not implemented)
-    Macro,
+    /// Key binding
+    Bind {
+        /// Profile id (1-3)
+        #[clap(
+            short, long,
+            help = "[default: 1]",
+            possible_values(["1", "2", "3"]),
+        )]
+        profile: Option<u8>,
 
-    /// (not implemented)
-    Keys,
+        /// Mouse button
+        #[clap(arg_enum)]
+        button: Button,
+
+        #[clap(subcommand)]
+        binding: Binding,
+    },
+
+    /// Scroll inversion
+    #[clap(subcommand)]
+    Scroll(Direction),
+}
+
+#[derive(Subcommand)]
+pub enum Direction {
+    Default,
+    Invert,
 }
 
 #[derive(Subcommand)]
@@ -271,4 +294,104 @@ pub enum Effect {
 
     /// No effect, LED off
     Off, 
+}
+
+#[derive(Clone, ArgEnum)]
+pub enum Button {
+    Left,
+    Right,
+    Scroll,
+    Forward,
+    Back,
+    DPI,
+    ScrollUp,
+    ScrollDown,
+}
+
+#[derive(Subcommand)]
+pub enum Binding {
+    /// Single key
+    Key {
+        #[clap(subcommand)]
+        kind: KeyKind,
+    },
+    
+    /// (not implemented) Keyboard function
+    Keyboard,
+    
+    /// Mouse function
+    #[clap(subcommand)]
+    Mouse(MouseFn),
+    
+    /// (not implemented) DPI modifier
+    DPI,
+    
+    /// (not implemented) Macro
+    Macro,
+    
+    /// (not implemented) Multimedia
+    Media,
+    
+    /// (not implemented) Launch applications etc.
+    Shortcut,
+    
+    /// (not implemented) Do nothing
+    None,
+}
+
+#[derive(Subcommand)]
+pub enum KeyKind {
+    /// Hardware scan code
+    ScanCode {
+        #[clap(parse(try_from_str = key::parse_scan_code))]
+        key: Key,
+
+        /// Optional modifier
+        #[clap(
+            short, long,
+            parse(try_from_str = key::parse_scan_code_mod),
+        )]
+        modifier: Option<Key>,
+    },
+
+    /// JS-style KeyCode
+    KeyCode {
+        #[clap(parse(try_from_str = key::parse_key_code))]
+        key: Key,
+
+        /// Optional modifier
+        #[clap(
+            short, long,
+            parse(try_from_str = key::parse_key_code_mod),
+        )]
+        modifier: Option<Key>,
+    },
+
+    /// JS-style Code
+    Code {
+        #[clap(parse(try_from_str = key::parse_code))]
+        key: Key,
+
+        /// Optional modifier
+        #[clap(
+            short, long,
+            parse(try_from_str = key::parse_code_mod),
+        )]
+        modifier: Option<Key>,
+    },
+}
+
+#[derive(Subcommand)]
+pub enum MouseFn {
+    Left,
+    Right,
+    Scroll,
+    Forward,
+    Back,
+    DPI,
+    ScrollUp,
+    ScrollDown,
+    ProfileCycleUp,
+    ProfileCycleDown,
+    BatteryStatus,
 }
