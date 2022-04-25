@@ -22,8 +22,8 @@ fn main() {
             // Glorious' vendor id
             d.vendor_id() == 0x258A &&
 
-            // Model O product id
-            [0x2011, 0x2022].contains(&d.product_id()) &&
+            // Model O/D product id
+            [0x2011, 0x2022, 0x2012, 0x2023].contains(&d.product_id()) &&
 
             // Feature report interface
             d.interface_number() == 0x02
@@ -33,7 +33,7 @@ fn main() {
         .none("No matching device found!");
 
     // Product id indicates whether wired
-    let wired = device_info.product_id() == 0x2011;
+    let wired = device_info.product_id() == 0x2011 || device_info.product_id() == 0x2012;
 
     // Connect to the device
     let device = device_info.open_device(&hid_api).unwrap();
