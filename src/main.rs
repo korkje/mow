@@ -23,7 +23,7 @@ fn main() {
             d.vendor_id() == 0x258A &&
 
             // Model O product id
-            [0x2011, 0x2022].contains(&d.product_id()) &&
+            [0x2011, 0x2022, 0x2013, 0x2024].contains(&d.product_id()) &&
 
             // Feature report interface
             d.interface_number() == 0x02
@@ -33,7 +33,7 @@ fn main() {
         .none("No matching device found!");
 
     // Product id indicates whether wired
-    let wired = device_info.product_id() == 0x2011;
+    let wired = [0x2011, 0x2013].contains(&device_info.product_id());
 
     // Connect to the device
     let device = device_info.open_device(&hid_api).unwrap();
