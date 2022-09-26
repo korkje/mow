@@ -1,6 +1,6 @@
 use colored::Colorize;
 use hidapi::HidDevice;
-use std::{ thread, time::{ Duration } };
+use std::{thread, time::Duration};
 
 pub fn get(device: &HidDevice, wired: bool) {
     let mut bfr_w = [0u8; 65];
@@ -24,7 +24,9 @@ pub fn get(device: &HidDevice, wired: bool) {
     }
 
     let mut status = [0xA1, 0xA4, 0xA2, 0xA0, 0xA3]
-        .iter().position(|&s| { s == bfr_r[1] }).unwrap();
+        .iter()
+        .position(|&s| s == bfr_r[1])
+        .unwrap();
 
     if bfr_r[6] != 0x83 {
         status = 2;
@@ -40,14 +42,17 @@ pub fn get(device: &HidDevice, wired: bool) {
                 100.. => "fully charged".green().bold(),
             };
             println!("{}% ({})", percentage, charging_status)
-        },
+        }
         (1, _) => println!("(asleep)"),
         (3, _) => print!("(waking up)"),
         (_, _) => {
             println!(
                 "[1:{:0>2X}, 6:{:0>2X}, 8:{:0>2X}] ({})",
-                bfr_r[1], bfr_r[6], bfr_r[8], "unknown status".red().bold(), 
+                bfr_r[1],
+                bfr_r[6],
+                bfr_r[8],
+                "unknown status".red().bold(),
             );
-        },
+        }
     }
 }

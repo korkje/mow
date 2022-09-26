@@ -1,10 +1,9 @@
 [package]
 name = "mow"
-authors = ["Ola Næss Kaldestad <mail@okal.no>"]
+authors = ["Ola Næss Kaldestad <mail@okal.no>", "Damian Bednarczyk <dbednarczyk@gmail.com"]
 version = "0.1.0"
 edition = "2021"
 description = """
-
 Cross platform CLI tool for Glorious' Model O Wireless.
 
 Reverse engineered using USB packet logs sniffed with
@@ -15,6 +14,6 @@ software (Glorious Core).
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clap = { version = "3.1.5", features = ["derive"] }
-hidapi = "1.3.3"
-colored = "2.0.0"
+clap = { version = "4.0.0-rc", features = ["derive"] }
+hidapi = "1.4"
+colored = "2.0"

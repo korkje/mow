@@ -1,5 +1,5 @@
-use hidapi::HidDevice;
 use crate::lib::color::Color;
+use hidapi::HidDevice;
 
 const PROFILE_DEFAULT: u8 = 1;
 
@@ -16,7 +16,7 @@ pub fn set(device: &HidDevice, profile: Option<u8>, colors: Vec<Color>) {
     bfr[7] = profile_id;
 
     for i in 0..colors.len() {
-        bfr[8 + 3 * i + 0] = colors[i].red;
+        bfr[8 + 3 * i] = colors[i].red;
         bfr[8 + 3 * i + 1] = colors[i].green;
         bfr[8 + 3 * i + 2] = colors[i].blue;
     }

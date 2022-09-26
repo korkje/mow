@@ -1,13 +1,13 @@
-pub mod key;
-pub mod mouse;
-pub mod media;
 pub mod dpi;
+pub mod key;
 pub mod keyboard;
+pub mod media;
+pub mod mouse;
 
+use crate::args::{Binding, Button};
 use colored::Colorize;
 use hidapi::HidDevice;
-use crate::args::{ Button, Binding };
-use std::{ thread, time::Duration };
+use std::{thread, time::Duration};
 
 const PROFILE_DEFAULT: u8 = 1;
 
@@ -20,29 +20,24 @@ pub fn set(device: &HidDevice, profile: Option<u8>, button: Button, binding: Bin
     bfr[5] = 0x03;
     bfr[7] = profile_id;
     bfr[8] = id_from_btn(button);
-    
+
     match binding {
-        Binding::Key { kind } =>
-            key::set(&mut bfr[10..], kind),
+        Binding::Key { kind } => key::set(&mut bfr[10..], kind),
 
-        Binding::Mouse(mouse_fn) =>
-            mouse::set(&mut bfr[10..], mouse_fn),
+        Binding::Mouse(mouse_fn) => mouse::set(&mut bfr[10..], mouse_fn),
 
-        Binding::Keyboard(keyboard_fn) =>
-            keyboard::set(&mut bfr[10..], keyboard_fn),
+        Binding::Keyboard(keyboard_fn) => keyboard::set(&mut bfr[10..], keyboard_fn),
 
-        Binding::Media(media_fn) =>
-            media::set(&mut bfr[10..], media_fn),
+        Binding::Media(media_fn) => media::set(&mut bfr[10..], media_fn),
 
-        Binding::DPI(dpi_fn) =>
-            dpi::set(&mut bfr[10..], dpi_fn),
+        Binding::DPI(dpi_fn) => dpi::set(&mut bfr[10..], dpi_fn),
 
         Binding::None => (),
 
         _ => println!("(not implemented)"),
     }
 
-    device.send_feature_report(&mut bfr).unwrap();
+    device.send_feature_report(&bfr).unwrap();
     set_and_check(device, &mut bfr, 0, false);
 }
 
@@ -51,8 +46,7 @@ pub fn set_and_check(device: &HidDevice, _bfr: &mut [u8], depth: u8, waiting: bo
         if waiting {
             thread::sleep(Duration::from_millis(100));
             set_and_check(device, _bfr, depth + 1, true);
-        }
-        else {
+        } else {
             thread::sleep(Duration::from_millis(100));
             let mut bfr = [0u8; 55];
             device.get_feature_report(&mut bfr).unwrap();
@@ -62,15 +56,14 @@ pub fn set_and_check(device: &HidDevice, _bfr: &mut [u8], depth: u8, waiting: bo
                 0xA2 => {
                     device.send_feature_report(_bfr).unwrap();
                     set_and_check(device, _bfr, depth + 1, false)
-                },
+                }
                 0xA0 => set_and_check(device, _bfr, depth + 1, false),
                 0xA4 => set_and_check(device, _bfr, depth + 1, true),
-                _ => return
+                _ => (),
             }
         }
-    }
-    else {
-        println!("{}: {}", "Error".bold().red(), "Failed setting key binding!");
+    } else {
+        println!("{}: Failed setting key binding!", "Error".bold().red());
     }
 }
 

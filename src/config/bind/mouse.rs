@@ -10,12 +10,10 @@ pub fn set(bfr: &mut [u8], mouse_fn: MouseFn) {
     if id == 12 {
         bfr[0] = 12;
         bfr[2] = 1;
-    }
-    else if id == 24 {
+    } else if id == 24 {
         bfr[0] = 8;
         bfr[2] = 4;
-    }
-    else if id == 25 {
+    } else if id == 25 {
         bfr[0] = 8;
         bfr[2] = 3;
     }

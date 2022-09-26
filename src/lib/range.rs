@@ -1,4 +1,4 @@
-use std::{ str::FromStr, ops::RangeInclusive };
+use std::{ops::RangeInclusive, str::FromStr};
 
 pub fn in_range(range: &'static RangeInclusive<usize>) -> impl Fn(&str) -> Result<(), String> {
     |str: &str| {

@@ -1,7 +1,6 @@
 use crate::args::KeyKind;
 
 pub fn set(bfr: &mut [u8], kind: KeyKind) {
-
     bfr[0] = 0x04;
     bfr[1] = 0x02;
 
@@ -23,8 +22,7 @@ pub fn set(bfr: &mut [u8], kind: KeyKind) {
 
     if let Some(value) = key.modifier {
         bfr[2] |= value;
-    }
-    else {
+    } else {
         bfr[3] = key.scan_code;
     }
 }
