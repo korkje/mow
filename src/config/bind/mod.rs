@@ -81,7 +81,7 @@ fn id_from_btn(button: Button) -> u8 {
         Button::Right => 2,
         Button::Forward => 5,
         Button::Back => 4,
-        Button::DPI => 20,
+        Button::DPI_BUTTON => 20,
         Button::ScrollUp => 16,
         Button::ScrollDown => 17,
     }
